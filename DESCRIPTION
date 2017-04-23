@@ -1,0 +1,17 @@
+Package: dsrTest
+Type: Package
+Title: Tests and Confidence Intervals on Directly Standardized 
+    Rates for Several Parametrizations
+Version: 0.1
+Date: 2017-04-20
+Author: Michael Nelson
+Maintainer: Michael Nelson <michael.nelson.r.pkg@gmail.com>
+Description: Perform a test of a simple null hypothesis about a 
+    directly standardized rate and obtain the matching confidence 
+    interval.
+License: GPL (>= 2)
+RoxygenNote: 6.0.1
+Roxygen: list(markdown = TRUE)
+Imports: stats,
+    exactci,
+    asht
