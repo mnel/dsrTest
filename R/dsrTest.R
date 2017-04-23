@@ -191,7 +191,8 @@ dsrTest <- function (x, n, w, null.value = NULL,
                        qnorm(c(alpha, 1 - alpha), y, sqrt(v)))
        p.value <- pz(alternative, 
                      scaleNull(null.value, mult), y, sqrt(v))
-       method <- methodName("Wald")
+       method <- methodName("Asymptotic method for Weighted Sum of Poissons", 
+                            "normal approximation of MLE")
      }
      if(control[["trans"]] == "log"){
        # variance of ln(y)
@@ -205,7 +206,8 @@ dsrTest <- function (x, n, w, null.value = NULL,
          log(scaleNull(null.value, mult))
        }
        p.value <- pz(alternative, zlstat, log(y), sqrt(vstar))
-       method <- methodName("Wald", "with log-transformation")
+       method <- methodName("Asymptotic method for Weighted Sum of Poissons", 
+        "normal approximation of the log-transformed MLE")
      }
   }
   # -- gamma 
