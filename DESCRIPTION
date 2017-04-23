@@ -9,6 +9,7 @@ Maintainer: Michael Nelson <michael.nelson.r.pkg@gmail.com>
 Description: Perform a test of a simple null hypothesis about a 
     directly standardized rate and obtain the matching confidence 
     interval using a choice of methods.
+Encoding: UTF-8
 License: GPL (>= 2)
 RoxygenNote: 6.0.1
 Roxygen: list(markdown = TRUE)
@@ -16,3 +17,5 @@ Imports: stats,
     exactci,
     asht
 Suggests: testthat
+URL: http://github.com/mnel/dsrTest
+BugReports: http://github.com/mnel/dsrTest/issues
