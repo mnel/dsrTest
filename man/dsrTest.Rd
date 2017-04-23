@@ -94,7 +94,7 @@ standardized rates based on the approximate bootstrap method',
 Fay & Feuer (1997). 'Confidence intervals for directly
 standardized rates: a method based on the gamma distribution.
 Statistics in Medicine*. \strong{16}: 791--801.
-\url{https://doi.org10.1002/(SICI)1097-0258(19970415)16:7<791::AID-SIM500>3.0.CO;2-\%23}
+\url{https://doi.org/10.1002/(SICI)1097-0258(19970415)16:7<791::AID-SIM500>3.0.CO;2-\%23}
 
 Tiwari, Clegg, & Zou (2006). 'Efficient interval estimation
 for age-adjusted cancer rates.'
@@ -103,7 +103,7 @@ for age-adjusted cancer rates.'
 
 Ng, Filardo, & Zheng (2008). 'Confidence interval estimating
 procedures for standardized incidence rates.'
-\emph{Computational Statistics and Data Analysis} \strong{52} 3501-3516.
+\emph{Computational Statistics and Data Analysis} \strong{52} 3501--3516.
 \doi{doi:10.1016/j.csda.2007.11.004}
 }
 \seealso{

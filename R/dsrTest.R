@@ -48,7 +48,7 @@
 #' Fay & Feuer (1997). 'Confidence intervals for directly 
 #' standardized rates: a method based on the gamma distribution.
 #' Statistics in Medicine*. **16**: 791--801.
-#' \url{https://doi.org10.1002/(SICI)1097-0258(19970415)16:7<791::AID-SIM500>3.0.CO;2-\%23}
+#' \url{https://doi.org/10.1002/(SICI)1097-0258(19970415)16:7<791::AID-SIM500>3.0.CO;2-\%23}
 #' 
 #' Tiwari, Clegg, & Zou (2006). 'Efficient interval estimation 
 #' for age-adjusted cancer rates.' 
@@ -57,7 +57,7 @@
 #' 
 #' Ng, Filardo, & Zheng (2008). 'Confidence interval estimating 
 #' procedures for standardized incidence rates.' 
-#' *Computational Statistics and Data Analysis* **52** 3501-3516.
+#' *Computational Statistics and Data Analysis* **52** 3501--3516.
 #' \doi{doi:10.1016/j.csda.2007.11.004}
 #' @param x a vector of strata-specific counts. 
 #' @param n a vector of strata-specific time bases for counts.
