@@ -15,7 +15,7 @@ only implemented where `wmtype = "max"``}
 
 \item{wmtype}{type of modification for the Gamma confidence interval.}
 
-\item{unirootTolFactor}{tolerance factor for unirott where \code{midp = TRUE}
+\item{unirootTolFactor}{tolerance factor for uniroot where \code{midp = TRUE}
 and \code{nmc = 0}.}
 }
 \value{

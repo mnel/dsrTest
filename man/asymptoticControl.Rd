@@ -16,6 +16,6 @@ A list with values
 }
 }
 \description{
-Speficify the transformation to apply to the distribution
+Specify the transformation to apply to the distribution
 of the MLE.
 }

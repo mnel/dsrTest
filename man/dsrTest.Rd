@@ -76,9 +76,8 @@ al (2006) - see \link{betaControl}. \cr
 P-values are estimated by solving for p.\cr
 }
 
-For each method there is a \code{control} function that will return a
-of parameters that can be used to define sub-types of each of the
-broad groups
+For each method there is a \code{control} function that will return a list of
+parameters that can be used to define sub-types of each of the broad groups
 }
 \references{
 Dobson, AJ, Kuulasmaa, K, Eberle, E and Scherer, J (1991)

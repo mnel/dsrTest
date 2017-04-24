@@ -31,9 +31,8 @@
 #' P-values are estimated by solving for p.\cr
 #' }
 #' 
-#' For each method there is a `control` function that will return a 
-#' of parameters that can be used to define sub-types of each of the
-#' broad groups
+#' For each method there is a `control` function that will return a list of
+#' parameters that can be used to define sub-types of each of the broad groups
 #' @references 
 #' Dobson, AJ, Kuulasmaa, K, Eberle, E and Scherer, J (1991) 
 #' 'Confidence intervals for weighted sums of Poisson parameters', 

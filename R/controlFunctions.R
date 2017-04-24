@@ -18,7 +18,7 @@ dobsonControl <- function(midp = FALSE,
 
 #' @title Control Function for Asymptotic Method Confidence Intervals
 #' 
-#' @description Speficify the transformation to apply to the distribution
+#' @description Specify the transformation to apply to the distribution
 #' of the MLE.
 #'
 #' @param trans Transformation apply to the MLE distribution. 
@@ -41,7 +41,7 @@ asymptoticControl <- function(trans = c("none","log")){
 #' only implemented where `wmtype = "max"``
 #' @param nmc Calculation method when `midp=TRUE`.
 #' @param wmtype type of modification for the Gamma confidence interval.
-#' @param unirootTolFactor tolerance factor for unirott where `midp = TRUE`
+#' @param unirootTolFactor tolerance factor for uniroot where `midp = TRUE`
 #' and `nmc = 0`.
 #' @return
 #' A list of arguments to pass to \code{\link[asht]{wspoissonTest}}.
