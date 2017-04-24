@@ -2,8 +2,8 @@
 
 language: r
 r:
-  - oldrel
-  - release
+  - 3.3.3
+  - 3.4.0
   - devel
 sudo: false
 cache: packages
