@@ -1,0 +1,48 @@
+---
+title: "dsrTest - examples"
+author: "Michael Nelson"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{dsrTest - example}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+To demonstrate the functionality of `dsrTest` and the variation in
+confidence interval methods, two example datasets are explored below.
+
+The following examples come from Curtin and Klein (1995).
+
+# Simple Hypothetical Example 
+
+All-cause mortality in two similarly sized communities (Curtin and Klein Table A)
+
+```{r Example-1-data}
+# community A
+A <- data.frame(Age = c('<34', '35-64', '65+'),
+                   Deaths = c(20, 120, 360),
+                   Population = c(1000, 3000, 6000))
+# community B
+B <- data.frame(Age = c('<34', '35-64', '65+'),
+                   Deaths = c(180, 150, 70),
+                   Population = c(6000, 3000, 1000))
+# Standard Population 
+Standard <- c(3000, 3000, 4000)
+```
+
+
+# Stroke Mortality 
+
+```{r example-2-data}
+stroke <- data.frame(
+  Deaths = c(1,0,1,2,8,21,46,103,254,371,212),
+  Population = c(38,150,322,344,443,379,256,189,136,57,12)*1e3,
+  Standard = c(15343,64718,170355,181677,162066,139237,117811,80294,48426,17303,2770))
+
+
+```
+
+# References
+
+Curtin LR and Klein RJ (1995) 'Direct Standardization (Age-Adjusted Death Rates). Centres for Disease Control and 'Prevention': *Healthy People 2000: Statistical Notes* **6**. https://www.cdc.gov/nchs/data/statnt/statnt06rv.pdf 

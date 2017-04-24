@@ -99,7 +99,7 @@ dsrTest <- function (x, n, w, null.value = NULL,
   ciBound <- function(alternative, ci){
     # return the appropriate CI from c(alpha, 1-alpha)
     switch(alternative,
-        less = c(0, ci[1]), greater = c(ci[2], Inf), two.sided = ci)
+        less = c(0, ci[2]), greater = c(ci[1], Inf), two.sided = ci)
   }
   pz <- function(alternative, null.value, mean, sd){
   # return p.value from zscore (or NA where null.value is NULL)

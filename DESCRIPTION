@@ -16,6 +16,9 @@ Roxygen: list(markdown = TRUE)
 Imports: stats,
     exactci,
     asht
-Suggests: testthat
+Suggests: testthat,
+    knitr,
+    rmarkdown
 URL: http://github.com/mnel/dsrTest
 BugReports: http://github.com/mnel/dsrTest/issues
+VignetteBuilder: knitr
