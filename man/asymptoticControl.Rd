@@ -11,9 +11,7 @@ asymptoticControl(trans = c("none", "log"))
 }
 \value{
 A list with values
-\itemize{
-\item \code{trans}
-}
+\item{\code{trans}}{}
 }
 \description{
 Specify the transformation to apply to the distribution

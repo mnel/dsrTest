@@ -14,21 +14,21 @@
 #' @details
 #' Four classes of method have been implemented here:
 #' 
-#' \tabular{ll}{
-#' `"gamma"` \tab Calls \code{\link[asht]{wspoissonTest}}. By default
-#' uses the Gamma Method proposed by Fay and Feuer (1997). Modifications
-#' proposed by Tiwari et al (2006) and Fay and Kim (2017) also implemented -
-#' see \code{\link{gammaControl}}. \cr
-#' `"asymptotic"` \tab Using the normal approximation of the MLE or transformed
-#' MLE distribition - see \code{\link{asymptoticControl}} \cr
-#' `"dobson"`  \tab Uses the method proposed by Dobson et al (1991). Estimating
-#' the confidence interval on the unweighted sum is done by calling
+#' \describe{
+#' \item{\code{"gamma"}}{Calls \code{\link[asht]{wspoissonTest}}. By default
+#' uses the Gamma Method proposed by Fay and Feuer (1997). 
+#' Modifications proposed by Tiwari et al (2006) and Fay and Kim (2017) 
+#' also implemented - see \code{\link{gammaControl}}.} 
+#' \item{\code{"asymptotic"}}{Using the normal approximation of the 
+#' MLE or transformed MLE distribition - see \code{\link{asymptoticControl}}}
+#' \item{\code{"dobson"}}{Uses the method proposed by Dobson et al (1991). 
+#' Estimating the confidence interval on the unweighted sum is done by calling
 #' \code{\link[exactci]{poisson.exact}} - both the exact method and
-#' a mid-p method are possible - see \link{dobsonControl}. \cr
-#' `"beta"`  \tab  Methods based on the beta distribution by Tiwari et
-#' al (2006) - see \link{betaControl}. \cr
-#' `"bootstrap"` \tab Approximate Bootstrap method by Swift (1995). 
-#' P-values are estimated by solving for p.\cr
+#' a mid-p method are possible - see \link{dobsonControl}.}
+#' \item{\code{"beta"}}{Methods based on the beta distribution by Tiwari et
+#' al (2006) - see \link{betaControl}.}
+#' \item{\code{"bootstrap"}}{Approximate Bootstrap method by Swift (1995). 
+#' P-values are estimated by solving for p.}
 #' }
 #' 
 #' For each method there is a `control` function that will return a list of
@@ -44,17 +44,17 @@
 #' *Statistics in Medicine*, **14**, 1875--1888.
 #' \doi{doi:10.1002/sim.4780141704}. 
 #' 
-#' Fay & Feuer (1997). 'Confidence intervals for directly 
+#' Fay MP & Feuer EJ (1997). 'Confidence intervals for directly 
 #' standardized rates: a method based on the gamma distribution.
 #' Statistics in Medicine*. **16**: 791--801.
 #' \url{https://doi.org/10.1002/(SICI)1097-0258(19970415)16:7<791::AID-SIM500>3.0.CO;2-\%23}
 #' 
-#' Tiwari, Clegg, & Zou (2006). 'Efficient interval estimation 
+#' Tiwari RC, Clegg LX, & Zou Z (2006). 'Efficient interval estimation 
 #' for age-adjusted cancer rates.' 
 #' *Statistical Methods in Medical Research* **15**: 547--569. 
 #' \doi{doi:10.1177/0962280206070621}
 #' 
-#' Ng, Filardo, & Zheng (2008). 'Confidence interval estimating 
+#' Ng HKT, Filardo, G & Zheng G (2008). 'Confidence interval estimating 
 #' procedures for standardized incidence rates.' 
 #' *Computational Statistics and Data Analysis* **52** 3501--3516.
 #' \doi{doi:10.1016/j.csda.2007.11.004}
@@ -73,20 +73,19 @@
 #' @param control list of arguments / type of modification used for
 #' each method. See details and relevant `"xxxxControl"` documentation
 #' @return a list with class `"htest"` containing the following 
-#' components
-#' \tabular{ll}{
-#' \code{statistic} \tab number of strata or summands: 
-#' `k = length(x)` \cr
-#' \code{parameter} \tab mult \cr
-#' \code{p.value} \tab p-value, set to `NA`` if `null.value = NULL` \cr
-#' \code{conf.int} \tab confidence interval on the true directly
-#' standardized rate \cr
-#' \code{estimate} \tab directly standardized rate \cr
-#' \code{null.value} \tab null hypothesis value for the DSR \cr
-#' \code{alternative} \tab alternative hypothesis type \cr
-#' \code{method} \tab description of the method \cr
-#' \code{data.name} \tab description of the data \cr
-#' }
+#' components: 
+#' \item{\code{statistic}}{number of strata or summands: 
+#' \code{k = length(x)}}
+#' \item{\code{parameter}}{mult}
+#' \item{\code{p.value}}{p-value, set to \code{NA} if \code{null.value = NULL}}
+#' \item{\code{conf.int}}{confidence interval on the true directly
+#' standardized rate}
+#' \item{\code{estimate}}{directly standardized rate}
+#' \item{\code{null.value}}{null hypothesis value for the DSR}
+#' \item{\code{alternative}}{alternative hypothesis type}
+#' \item{\code{method}}{description of the method}
+#' \item{\code{data.name}}{description of the data}
+#' 
 #' @importFrom stats qnorm qlnorm qbeta pbeta pnorm uniroot
 #' @importFrom exactci poisson.exact
 #' @importFrom asht wspoissonTest
@@ -97,7 +96,7 @@ dsrTest <- function (x, n, w, null.value = NULL,
   method = c("gamma", "asymptotic", "dobson","beta", "bootstrap"),
   control = list()){
   # Functions for use later
-  ciBound <- function(alternative,ci){
+  ciBound <- function(alternative, ci){
     # return the appropriate CI from c(alpha, 1-alpha)
     switch(alternative,
         less = c(0, ci[1]), greater = c(ci[2], Inf), two.sided = ci)
@@ -173,8 +172,8 @@ dsrTest <- function (x, n, w, null.value = NULL,
     # as scaling and shifting have destroyed the work of
     # poisson.exact
     CINT <- switch(alternative,
-      less = c(0,CINT[2]),
-      greater = c(CINT[1],Inf),
+      less = c(0, CINT[2]),
+      greater = c(CINT[1], Inf),
       CINT)
     p.value <- if(is.null(null.value)) NA else htest[["p.value"]]
     dname <- htest[["data.name"]]
@@ -245,7 +244,7 @@ dsrTest <- function (x, n, w, null.value = NULL,
     
     pFunction <- function(p){
       num <- z0 + qnorm(p)
-      y  + sqrt(v) * num/((1-a*num)^2)
+      y  + sqrt(v) * num/((1 - a*num)^2)
     }
     CINT <- ciBound(alternative,pFunction(c(alpha, 1 - alpha)))
     if(is.null(null.value)){
@@ -254,8 +253,8 @@ dsrTest <- function (x, n, w, null.value = NULL,
       nv <- scaleNull(null.value, mult)
       f.AL <- function(p) pFunction(p) - nv
       f.AG <- function(p)  (pFunction(1- p) - nv)
-      pAL <- uniroot(f.AL, interval = c(1e-07,1-1e-07))$root
-      pAG <- uniroot(f.AG, interval = c(1e-07,1-1e-07))$root
+      pAL <- uniroot(f.AL, interval = c(1e-07, 1-1e-07))$root
+      pAG <- uniroot(f.AG, interval = c(1e-07, 1-1e-07))$root
       p.value <- switch(alternative,
         less = pAL, greater = pAG, two.sided = min(1, 2*pAG, 2*pAL))
     }

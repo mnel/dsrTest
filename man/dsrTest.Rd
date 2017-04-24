@@ -34,20 +34,18 @@ each method. See details and relevant \code{"xxxxControl"} documentation}
 }
 \value{
 a list with class \code{"htest"} containing the following
-components
-\tabular{ll}{
-\code{statistic} \tab number of strata or summands:
-\code{k = length(x)} \cr
-\code{parameter} \tab mult \cr
-\code{p.value} \tab p-value, set to \code{NA`` if}null.value = NULL` \cr
-\code{conf.int} \tab confidence interval on the true directly
-standardized rate \cr
-\code{estimate} \tab directly standardized rate \cr
-\code{null.value} \tab null hypothesis value for the DSR \cr
-\code{alternative} \tab alternative hypothesis type \cr
-\code{method} \tab description of the method \cr
-\code{data.name} \tab description of the data \cr
-}
+components:
+\item{\code{statistic}}{number of strata or summands:
+\code{k = length(x)}}
+\item{\code{parameter}}{mult}
+\item{\code{p.value}}{p-value, set to \code{NA} if \code{null.value = NULL}}
+\item{\code{conf.int}}{confidence interval on the true directly
+standardized rate}
+\item{\code{estimate}}{directly standardized rate}
+\item{\code{null.value}}{null hypothesis value for the DSR}
+\item{\code{alternative}}{alternative hypothesis type}
+\item{\code{method}}{description of the method}
+\item{\code{data.name}}{description of the data}
 }
 \description{
 A number of methods have been proposed for calculating
@@ -59,21 +57,21 @@ implemented in \code{\link[asht]{wspoissonTest}}.
 \details{
 Four classes of method have been implemented here:
 
-\tabular{ll}{
-\code{"gamma"} \tab Calls \code{\link[asht]{wspoissonTest}}. By default
-uses the Gamma Method proposed by Fay and Feuer (1997). Modifications
-proposed by Tiwari et al (2006) and Fay and Kim (2017) also implemented -
-see \code{\link{gammaControl}}. \cr
-\code{"asymptotic"} \tab Using the normal approximation of the MLE or transformed
-MLE distribition - see \code{\link{asymptoticControl}} \cr
-\code{"dobson"}  \tab Uses the method proposed by Dobson et al (1991). Estimating
-the confidence interval on the unweighted sum is done by calling
+\describe{
+\item{\code{"gamma"}}{Calls \code{\link[asht]{wspoissonTest}}. By default
+uses the Gamma Method proposed by Fay and Feuer (1997).
+Modifications proposed by Tiwari et al (2006) and Fay and Kim (2017)
+also implemented - see \code{\link{gammaControl}}.}
+\item{\code{"asymptotic"}}{Using the normal approximation of the
+MLE or transformed MLE distribition - see \code{\link{asymptoticControl}}}
+\item{\code{"dobson"}}{Uses the method proposed by Dobson et al (1991).
+Estimating the confidence interval on the unweighted sum is done by calling
 \code{\link[exactci]{poisson.exact}} - both the exact method and
-a mid-p method are possible - see \link{dobsonControl}. \cr
-\code{"beta"}  \tab  Methods based on the beta distribution by Tiwari et
-al (2006) - see \link{betaControl}. \cr
-\code{"bootstrap"} \tab Approximate Bootstrap method by Swift (1995).
-P-values are estimated by solving for p.\cr
+a mid-p method are possible - see \link{dobsonControl}.}
+\item{\code{"beta"}}{Methods based on the beta distribution by Tiwari et
+al (2006) - see \link{betaControl}.}
+\item{\code{"bootstrap"}}{Approximate Bootstrap method by Swift (1995).
+P-values are estimated by solving for p.}
 }
 
 For each method there is a \code{control} function that will return a list of
@@ -90,17 +88,17 @@ standardized rates based on the approximate bootstrap method',
 \emph{Statistics in Medicine}, \strong{14}, 1875--1888.
 \doi{doi:10.1002/sim.4780141704}.
 
-Fay & Feuer (1997). 'Confidence intervals for directly
+Fay MP & Feuer EJ (1997). 'Confidence intervals for directly
 standardized rates: a method based on the gamma distribution.
 Statistics in Medicine*. \strong{16}: 791--801.
 \url{https://doi.org/10.1002/(SICI)1097-0258(19970415)16:7<791::AID-SIM500>3.0.CO;2-\%23}
 
-Tiwari, Clegg, & Zou (2006). 'Efficient interval estimation
+Tiwari RC, Clegg LX, & Zou Z (2006). 'Efficient interval estimation
 for age-adjusted cancer rates.'
 \emph{Statistical Methods in Medical Research} \strong{15}: 547--569.
 \doi{doi:10.1177/0962280206070621}
 
-Ng, Filardo, & Zheng (2008). 'Confidence interval estimating
+Ng HKT, Filardo, G & Zheng G (2008). 'Confidence interval estimating
 procedures for standardized incidence rates.'
 \emph{Computational Statistics and Data Analysis} \strong{52} 3501--3516.
 \doi{doi:10.1016/j.csda.2007.11.004}

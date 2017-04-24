@@ -9,9 +9,9 @@ gammaControl(midp = FALSE, nmc = 0, wmtype = c("max", "mean", "minmaxavg",
 }
 \arguments{
 \item{midp}{logical. Use mid-p confidence distribution method? Currently
-only implemented where `wmtype = "max"``}
+only implemented where \code{wmtype = "max"}}
 
-\item{nmc}{Calculation method when \code{midp=TRUE}.}
+\item{nmc}{Calculation method when \code{midp = TRUE}.}
 
 \item{wmtype}{type of modification for the Gamma confidence interval.}
 
@@ -21,16 +21,12 @@ and \code{nmc = 0}.}
 \value{
 A list of arguments to pass to \code{\link[asht]{wspoissonTest}}.
 If \code{midp = TRUE}, with values
-\itemize{
-\item \code{midp}
-\item \code{nmc}
-\item \code{unirootTolFactor}
-}
+\item{\code{midp}}{}
+\item{\code{nmc}}{}
+\item{\code{unirootTolFactor}}{}
 
 If \code{midp = FALSE}, with values
-\itemize{
-\item \code{wmtype}
-}
+\item{\code{wmtype}}{}
 }
 \description{
 Provides a list of arguments to pass to

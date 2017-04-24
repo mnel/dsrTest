@@ -14,10 +14,8 @@ where \code{tsmethod = "central"}.}
 }
 \value{
 a list with values
-\itemize{
-\item \code{midp}
-\item \code{tsmethod}
-}
+\item{\code{midp}}{}
+\item{\code{tsmethod}}{}
 }
 \description{
 Provides a list of arguments to pass to

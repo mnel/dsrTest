@@ -4,14 +4,14 @@
 #' \code{\link[exactci]{poisson.exact}}.
 #' @seealso \code{\link[exactci]{poisson.exact}}
 #' @return a list with values 
-#' - `midp`
-#' - `tsmethod`
+#' \item{\code{midp}}{}
+#' \item{\code{tsmethod}}{}
 #' @param midp logical, use mid-p values? Currently only permitted
 #' where `tsmethod = "central"`.
 #' @param tsmethod `character` giving two-sided method
 #' @export
 dobsonControl <- function(midp = FALSE, 
-                          tsmethod = c("central","minlike","blaker")){
+                          tsmethod = c("central", "minlike", "blaker")){
   tsmethod <- match.arg(tsmethod)
   list(midp = midp, tsmethod = tsmethod)
 }
@@ -25,33 +25,32 @@ dobsonControl <- function(midp = FALSE,
 #'
 #' @return
 #' A list with values
-#' - `trans`
+#' \item{\code{trans}}{}
 #' @export
-asymptoticControl <- function(trans = c("none","log")){
+asymptoticControl <- function(trans = c("none", "log")){
   trans <- match.arg(trans)
   list(trans = trans)
 }
-
 
 #' @title Control Function for Gamma Method Confidence Intervals
 #' @description Provides a list of arguments to pass to 
 #' \code{\link[asht]{wspoissonTest}}.
 #' @seealso \code{\link[asht]{wspoissonTest}}
 #' @param midp logical. Use mid-p confidence distribution method? Currently
-#' only implemented where `wmtype = "max"``
-#' @param nmc Calculation method when `midp=TRUE`.
+#' only implemented where `wmtype = "max"`
+#' @param nmc Calculation method when `midp = TRUE`.
 #' @param wmtype type of modification for the Gamma confidence interval.
 #' @param unirootTolFactor tolerance factor for uniroot where `midp = TRUE`
 #' and `nmc = 0`.
 #' @return
 #' A list of arguments to pass to \code{\link[asht]{wspoissonTest}}.
 #' If `midp = TRUE`, with values
-#' - `midp`
-#' - `nmc`
-#' - `unirootTolFactor`
+#' \item{\code{midp}}{}
+#' \item{\code{nmc}}{}
+#' \item{\code{unirootTolFactor}}{}
 #' 
 #' If `midp = FALSE`, with values
-#' - `wmtype`
+#' \item{\code{wmtype}}{}
 #' @export
 gammaControl <- function(midp = FALSE, nmc = 0,  
                          wmtype = c("max", "mean", "minmaxavg", "tcz"), 
