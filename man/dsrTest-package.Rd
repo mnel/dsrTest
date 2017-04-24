@@ -1,4 +1,5 @@
 \name{dsrTest-package}
+\alias{dsrTest-package}
 \docType{package}
 \title{\packageTitle{dsrTest}}
 \description{\packageDescription{dsrTest}}
