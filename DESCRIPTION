@@ -13,6 +13,7 @@ Encoding: UTF-8
 License: GPL (>= 2)
 RoxygenNote: 6.0.1
 Roxygen: list(markdown = TRUE)
+Depends: R (>= 2.10)
 Imports: stats,
     exactci,
     asht
@@ -22,3 +23,4 @@ Suggests: testthat,
 URL: http://github.com/mnel/dsrTest
 BugReports: http://github.com/mnel/dsrTest/issues
 VignetteBuilder: knitr
+LazyData: true

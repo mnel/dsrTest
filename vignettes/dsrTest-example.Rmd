@@ -9,40 +9,95 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-To demonstrate the functionality of `dsrTest` and the variation in
-confidence interval methods, two example datasets are explored below.
+To demonstrate the functionality of `dsrTest` the various methods to
+construct confidence interval are demonstrated on the example data drawn from Table 14.4 in Fleiss (1981) (also used in Fay and Feuer (1997)).
 
-The following examples come from Curtin and Klein (1995).
+The example data come from a study of Down Syndrome and maternal age 
+(Stark and Mantell, 1966).
 
-# Simple Hypothetical Example 
+```{r example-data}
+library(dsrTest)
+# the data are in `downs.mi`
+data("downs.mi", package = "dsrTest")
+# Birth order 5 +
+b5 <- downs.mi[downs.mi$BirthOrder == 5, ]
+# Gamma Method
+with(b5, dsrTest(Cases, Births, Standard, mult = 1e5, method = "gamma"))
+# Gamma Mid-p
+with(b5, dsrTest(Cases, Births, Standard, mult = 1e5, method = "gamma",
+                 control = list(midp = TRUE)))
+# Dobson (exact)
+with(b5, dsrTest(Cases, Births, Standard, mult = 1e5, method = "dobson"))
+# Dobson (Mid-p)
+with(b5, dsrTest(Cases, Births, Standard, mult = 1e5, method = "dobson",
+                 control = list(midp = TRUE)))
+# Asymptotic (no transformation)
+with(b5, dsrTest(Cases, Births, Standard, mult = 1e5, method = "asymptotic"))
+# Asymptotic (log transformation)
+with(b5, dsrTest(Cases, Births, Standard, mult = 1e5, method = "asymptotic",
+                 control = list(trans = "log")))
+# Beta Method
+with(b5, dsrTest(Cases, Births, Standard, mult = 1e5, method = "beta"))
+# Approximate Bootstrap Method
+with(b5, dsrTest(Cases, Births, Standard, mult = 1e5, method = "bootstrap"))
+```
 
-All-cause mortality in two similarly sized communities (Curtin and Klein Table A)
+## Summaries
 
-```{r Example-1-data}
-# community A
-A <- data.frame(Age = c('<34', '35-64', '65+'),
-                   Deaths = c(20, 120, 360),
-                   Population = c(1000, 3000, 6000))
-# community B
-B <- data.frame(Age = c('<34', '35-64', '65+'),
-                   Deaths = c(180, 150, 70),
-                   Population = c(6000, 3000, 1000))
-# Standard Population 
-Standard <- c(3000, 3000, 4000)
+```{r summaries}
+methods_list  <- list(
+  gamma = list(
+    list(wmtype = 'max'),
+    list(midp = TRUE),
+    list(wmtype = "tcz"),
+    list(wmtype = "mean"),
+    list(wmtype = "minmaxavg")),
+  asymptotic = list(
+    list(trans = "none"),
+    list(trans = "log")),
+  dobson = list(
+    list(midp = FALSE), 
+    list(midp = TRUE)),
+  beta = list(list()),
+  bootstrap = list(list())
+)
+
+all_methods <- mapply(dsrTest::dsrTest,
+  method = rep(names(methods_list), times = lengths(methods_list)),
+  control = do.call(c, unname(methods_list)),
+  MoreArgs = list(mult = 1e5, x = b5$Cases, n = b5$Births, w = b5$Standard),
+  SIMPLIFY = FALSE)
+
+names(all_methods) <- c("gamma [wmtype=max]","gamma [midp]", 
+                        "gamma [wmtype=tcz]", "gamma [wmtype=mean]", 
+                        "gamma [wmtype=minmaxavg]",
+                        "asymptotic [trans=none]", "asymptotic [trans=log]",
+                        "dobson [exact ci]","dobson [midp=TRUE]",
+                         "beta", "bootstrap")
+
+results <- do.call(rbind,lapply(all_methods, 
+  function(data) data.frame(
+    estimate = data$estimate, 
+    lci = data$conf.int[1], 
+    uci = data$conf.int[2])))
+
+knitr::kable(results, digits = 3)
 ```
 
 
-# Stroke Mortality 
-
-```{r example-2-data}
-stroke <- data.frame(
-  Deaths = c(1,0,1,2,8,21,46,103,254,371,212),
-  Population = c(38,150,322,344,443,379,256,189,136,57,12)*1e3,
-  Standard = c(15343,64718,170355,181677,162066,139237,117811,80294,48426,17303,2770))
-
-
-```
 
 # References
 
-Curtin LR and Klein RJ (1995) 'Direct Standardization (Age-Adjusted Death Rates). Centres for Disease Control and 'Prevention': *Healthy People 2000: Statistical Notes* **6**. https://www.cdc.gov/nchs/data/statnt/statnt06rv.pdf 
+Fleiss, JL (1981) *Statistical Methods for Rates and Proportions*, 
+Wiley, New York.
+
+Stark CR and Mantel N (1966) 'Effects of maternal age and birth order 
+on the risk of mongolism and leukemia' *J Natl Cancer Inst* 
+**37** (5) 687--698. https://doi.org/10.1093/jnci/37.5.687
+
+Fay MP & Feuer EJ (1997). 'Confidence intervals for directly
+standardized rates: a method based on the gamma distribution.
+ *Statistics in Medicine*. **16**: 791--801.
+ [https://doi.org/10.1002/(SICI)1097-0258(19970415)16:7<791::AID-SIM500>3.0.CO;2-\%23](https://doi.org/10.1002/(SICI)1097-0258(19970415)16:7<791::AID-SIM500>3.0.CO;2-\%23)
+ 
+ 
