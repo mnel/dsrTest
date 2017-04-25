@@ -11,7 +11,7 @@ by maternal age and birth order, Michigan, 1950-1964.}
 \item{\code{BirthOrder}}{The birth order.}
 \item{\code{Cases}}{The number of cases of Down's Sydrome.}
 \item{\code{Births}}{The number of live births.}
-\item{\code{Standard}}{A "standard" population, derived as the average
+\item{\code{Standard}}{A "standard" population, derived as the total
 number of births in each age category}
 }}
 \source{

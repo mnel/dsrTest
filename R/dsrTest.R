@@ -146,7 +146,7 @@ dsrTest <- function (x, n, w, null.value = NULL,
     control)
   # estimated values
   # rescale weights to include timebases
-  W <- w / (n * (sum(w)))
+  W <- (w /sum(w))/n
   # dsr
   y <- sum(W * x)
   # var(dsr)
