@@ -93,7 +93,7 @@
 dsrTest <- function (x, n, w, null.value = NULL,
   alternative = c("two.sided", "less", "greater"),
   conf.level = 0.95, mult = 1,
-  method = c("gamma", "asymptotic", "dobson","beta", "bootstrap"),
+  method = c("gamma", "asymptotic", "dobson", "beta", "bootstrap"),
   control = list()){
   # Functions for use later
   ciBound <- function(alternative, ci){
@@ -104,22 +104,23 @@ dsrTest <- function (x, n, w, null.value = NULL,
   pz <- function(alternative, null.value, mean, sd){
   # return p.value from zscore (or NA where null.value is NULL)
       p.value <- NA
-    if(!is.null(null.value)){
-      zstat <- (null.value - mean)/sd
+    if (!is.null(null.value)){
+      zstat <- (null.value - mean) / sd
       p.value <- switch(alternative,
                         less = pnorm(zstat),
                         greater = pnorm(zstat, lower.tail = FALSE),
-                        two.sided = 2*(pnorm(-abs(zstat))))
+                        two.sided = 2 * (pnorm(-abs(zstat))))
     }
   p.value
   }
-  scaleNull <- function(null.value, mult,nullv = NULL){
+  scaleNull <- function(null.value, mult, nullv = NULL){
   # scale null.value if not null
-      r <- if(is.null(null.value)) {nullv}else{null.value/mult}
+      r <- if (is.null(null.value)) nullv else null.value / mult
+      r
   }
   methodName <- function(using, ...){
   # create a method name  (save a bit of typing)
-    paste("Directly standardized rate: ", using, ..., sep = ' ')
+    paste("Directly standardized rate: ", using, ..., sep = " ")
   }
   # - Argument checking
   alternative <- match.arg(alternative)
@@ -129,7 +130,7 @@ dsrTest <- function (x, n, w, null.value = NULL,
   alpha <- 1 - conf.level
   if (alternative == "two.sided")
     alpha <- alpha / 2
-  if (length(x) != length(w)||length(x) !=length(n))
+  if (length(x) != length(w) || length(x) != length(n))
     stop("'x', 'n' and 'w' must be of the same length")
   if (anyNA(x))
     stop("missing values in 'x'")
@@ -146,16 +147,16 @@ dsrTest <- function (x, n, w, null.value = NULL,
     control)
   # estimated values
   # rescale weights to include timebases
-  W <- (w /sum(w))/n
+  W <- (w / sum(w)) / n
   # dsr
   y <- sum(W * x)
-  # var(dsr)
+  # variance of the dsr
   v <- sum(x * W ^ 2)
-  # sum(x)
+  # sum of x
   X <- sum(x)
   # CI and p values by method
   # -- Dobson - uses exactci::poisson.exact
-  if(method == "dobson"){
+  if (method == "dobson"){
     # Inverse (scale and shift) the null.value
     # exactci::poisson.exact requires non-NULL r
     nv <-
@@ -163,11 +164,11 @@ dsrTest <- function (x, n, w, null.value = NULL,
         1
     else
       X + (y - null.value / mult) * sqrt(X / v)
-    htest <- do.call(exactci::poisson.exact, 
+    htest <- do.call(exactci::poisson.exact,
         c(list(x = X, r = nv, alternative = alternative,
           conf.level = conf.level), control)
         )
-    CINT <- y + sqrt(v/X)*(htest[["conf.int"]] - X)
+    CINT <- y + sqrt(v / X ) * (htest[["conf.int"]] - X)
     # deal with alternatives alternatively to ciBound
     # as scaling and shifting have destroyed the work of
     # poisson.exact
@@ -175,27 +176,27 @@ dsrTest <- function (x, n, w, null.value = NULL,
       less = c(0, CINT[2]),
       greater = c(CINT[1], Inf),
       CINT)
-    p.value <- if(is.null(null.value)) NA else htest[["p.value"]]
+    p.value <- if (is.null(null.value)) NA else htest[["p.value"]]
     dname <- htest[["data.name"]]
     method <- methodName(
       "Dobson's method for Weighted Sum of Poissons with",
       htest[["method"]])
   }
-  # -- Asymptotic
-   if(method =="asymptotic"){
+  # Asymptotic
+   if (method == "asymptotic"){
      control <- do.call(asymptoticControl, control)
-     if(control[["trans"]] =="none"){
-       CINT <- ciBound(alternative, 
+     if (control[["trans"]] == "none"){
+       CINT <- ciBound(alternative,
                        qnorm(c(alpha, 1 - alpha), y, sqrt(v)))
-       p.value <- pz(alternative, 
+       p.value <- pz(alternative,
                      scaleNull(null.value, mult), y, sqrt(v))
-       method <- methodName("Asymptotic method for Weighted Sum of Poissons", 
+       method <- methodName("Asymptotic method for Weighted Sum of Poissons",
                             "normal approximation of MLE")
      }
-     if(control[["trans"]] == "log"){
-       # variance of ln(y)
-       vstar <- v/(y^2)
-       CINT <- ciBound(alternative, 
+     if (control[["trans"]] == "log"){
+       # variance of ln[y]
+       vstar <- v / (y ^ 2)
+       CINT <- ciBound(alternative,
         qlnorm(c(alpha, 1 - alpha), log(y), sqrt(vstar)))
        # scaleNull doesn't apply transformations
        zlstat <- if (is.null(null.value)) {
@@ -204,61 +205,60 @@ dsrTest <- function (x, n, w, null.value = NULL,
          log(scaleNull(null.value, mult))
        }
        p.value <- pz(alternative, zlstat, log(y), sqrt(vstar))
-       method <- methodName("Asymptotic method for Weighted Sum of Poissons", 
+       method <- methodName("Asymptotic method for Weighted Sum of Poissons",
         "normal approximation of the log-transformed MLE")
      }
   }
-  # -- gamma 
+  # gamma
   # uses asht::wsPoissonTest
-  if(method == "gamma"){
+  if (method == "gamma"){
     nv <- scaleNull(null.value, mult)
-    htest <- do.call(asht::wspoissonTest,c(
+    htest <- do.call(asht::wspoissonTest, c(
       list(x = x, w = W, nullValue = nv, alternative = alternative,
            conf.level = conf.level), control))
     CINT <- htest[["conf.int"]]
     p.value <- htest[["p.value"]]
     method <- methodName(htest[["method"]])
   }
-  # -- beta  
+  # beta
   if (method == "beta"){
-    a <- y*(y*(1 -y)/v - 1)
-    b <- (1 - y)*(y*(1- y)/v - 1)
+    a <- y * (y * (1 - y) / v - 1)
+    b <- (1 - y) * (y * (1 - y) / v - 1)
     nv <- scaleNull(null.value, mult)
     CINT <- ciBound(alternative, qbeta(c(alpha, 1 - alpha), a, b))
-    p.value <- 
+    p.value <-
       if (is.null(null.value))
         NA
      else {
        pAL <- pbeta(nv, a, b)
        pAG <- pbeta(nv, a, b, lower.tail = FALSE)
-       switch(alternative, 
-         less = pAL, greater = pAG, two.sided = min(1, 2*pAL, 2*pAG))
+       switch(alternative,
+         less = pAL, greater = pAG,
+         two.sided = min(1, 2 * pAL, 2 * pAG))
      }
     method <- methodName("Beta method for Weighted Sum of Poissons")
   }
-  
   # - Approximate bootstrap
-  
-  if(method == "bootstrap"){
-    z0 <- a <- sum(x*(W^3))/ (6*v^(3/2))
-    
+  if (method == "bootstrap"){
+    z0 <- a <- sum(x * (W ^ 3)) / (6 * v ^ (3 / 2))
     pFunction <- function(p){
       num <- z0 + qnorm(p)
-      y  + sqrt(v) * num/((1 - a*num)^2)
+      y  + sqrt(v) * num / ( (1 - a * num) ^ 2)
     }
-    CINT <- ciBound(alternative,pFunction(c(alpha, 1 - alpha)))
-    if(is.null(null.value)){
+    CINT <- ciBound(alternative, pFunction(c(alpha, 1 - alpha)))
+    if (is.null(null.value)){
       p.value <- NA
     } else {
       nv <- scaleNull(null.value, mult)
       f.AL <- function(p) pFunction(p) - nv
-      f.AG <- function(p)  (pFunction(1- p) - nv)
-      pAL <- uniroot(f.AL, interval = c(1e-07, 1-1e-07))$root
-      pAG <- uniroot(f.AG, interval = c(1e-07, 1-1e-07))$root
-      p.value <- switch(alternative,
-        less = pAL, greater = pAG, two.sided = min(1, 2*pAG, 2*pAL))
+      f.AG <- function(p)  (pFunction(1 - p) - nv)
+      pAL <- uniroot(f.AL, interval = c(1e-07, 1 - 1e-07))$root
+      pAG <- uniroot(f.AG, interval = c(1e-07, 1 - 1e-07))$root
+      p.value <- switch(alternative, less = pAL, greater = pAG,
+        two.sided = min(1, 2 * pAG, 2 * pAL))
     }
-    method <- methodName("Approximate bootstrap method for Weighted Sum of Poissons")
+    method <- methodName(
+      "Approximate bootstrap method for Weighted Sum of Poissons")
   }
   # Set up htest attributes
   attr(CINT, "conf.level") <- conf.level
@@ -274,7 +274,7 @@ dsrTest <- function (x, n, w, null.value = NULL,
   xname <- paste0("x = ", deparse(substitute(x)))
   timebasename <- paste0("time bases: n = ", deparse(substitute(n)))
   wname <- paste0("weights: w = ", deparse(substitute(w)))
-  dname <- paste(xname, timebasename, wname, sep = ', ')
+  dname <- paste(xname, timebasename, wname, sep = ", ")
   # returned object
   structure(
     list(
@@ -289,5 +289,4 @@ dsrTest <- function (x, n, w, null.value = NULL,
       data.name = dname
     ),
     class = "htest")
-} 
-
+}

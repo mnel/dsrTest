@@ -5,7 +5,7 @@
 \title{Control Function for Gamma Method Confidence Intervals}
 \usage{
 gammaControl(midp = FALSE, nmc = 0, wmtype = c("max", "mean", "minmaxavg",
-  "tcz"), unirootTolFactor = 10^(-6))
+  "tcz"), unirootTolFactor = 1e-06)
 }
 \arguments{
 \item{midp}{logical. Use mid-p confidence distribution method? Currently

@@ -10,7 +10,7 @@
 #' where `tsmethod = "central"`.
 #' @param tsmethod `character` giving two-sided method
 #' @export
-dobsonControl <- function(midp = FALSE, 
+dobsonControl <- function(midp = FALSE,
                           tsmethod = c("central", "minlike", "blaker")){
   tsmethod <- match.arg(tsmethod)
   list(midp = midp, tsmethod = tsmethod)
@@ -52,15 +52,15 @@ asymptoticControl <- function(trans = c("none", "log")){
 #' If `midp = FALSE`, with values
 #' \item{\code{wmtype}}{}
 #' @export
-gammaControl <- function(midp = FALSE, nmc = 0,  
-                         wmtype = c("max", "mean", "minmaxavg", "tcz"), 
-                         unirootTolFactor=10^(-6)){
+gammaControl <- function(midp = FALSE, nmc = 0,
+                         wmtype = c("max", "mean", "minmaxavg", "tcz"),
+                         unirootTolFactor = 1e-06){
   wmtype <- match.arg(wmtype)
-  if(midp) {
-    RVAL <- list(midp = midp, nmc = nmc, 
+  if (midp) {
+    RVAL <- list(midp = midp, nmc = nmc,
                  unirootTolFactor = unirootTolFactor)
   } else {
-      RVAL = list(wmtype = wmtype)
+      RVAL <- list(wmtype = wmtype)
     }
   RVAL
 }
@@ -76,4 +76,3 @@ gammaControl <- function(midp = FALSE, nmc = 0,
 #'
 #' @export
 betaControl <- function(...) list()
-  
