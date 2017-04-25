@@ -58,3 +58,14 @@ test_that("Confidence Intervals are ordered appropriately",
             all(!sapply(all_ts, function(x) is.unsorted(x$confint)))
           }
 )
+
+context("Integer overflow")
+
+xL <-c(0L, 8L, 63L, 112L, 262L, 295L)
+nL <-c(327L, 30666L, 123419L, 149919L, 104088L, 34392L)
+ntL <-c(319933L, 931318L, 786511L, 488235L, 237863L, 61313L)
+
+test_that("Integer valued data doesn't cause issues",{
+  expect_equal(all_ts[[1]][-9], dsrTest(xL, nL, ntL,mult=1e5)[-9])
+  
+})
