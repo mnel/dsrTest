@@ -19,7 +19,8 @@ Imports: stats,
     asht
 Suggests: testthat,
     knitr,
-    rmarkdown
+    rmarkdown,
+    covr
 URL: http://github.com/mnel/dsrTest
 BugReports: http://github.com/mnel/dsrTest/issues
 VignetteBuilder: knitr
