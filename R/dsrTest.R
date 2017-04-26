@@ -113,9 +113,9 @@ dsrTest <- function (x, n, w, null.value = NULL,
     }
   p.value
   }
-  scaleNull <- function(null.value, mult, nullv = NULL){
+  scaleNull <- function(null.value, mult, nullv = NULL, fun = identity){
   # scale null.value if not null
-      r <- if (is.null(null.value)) nullv else null.value / mult
+      r <- if (is.null(null.value)) nullv else fun(null.value / mult)
       r
   }
   methodName <- function(using, ...){
@@ -192,12 +192,7 @@ dsrTest <- function (x, n, w, null.value = NULL,
        vstar <- v / (y ^ 2)
        CINT <- ciBound(alternative,
         qlnorm(c(alpha, 1 - alpha), log(y), sqrt(vstar)))
-       # scaleNull doesn't apply transformations
-       zlstat <- if (is.null(null.value)) {
-         NULL
-       } else {
-         log(scaleNull(null.value, mult))
-       }
+       zlstat <- scaleNull(null.value, mult, fun = log)
        p.value <- pz(alternative, zlstat, log(y), sqrt(vstar))
        method <- methodName("Asymptotic method for Weighted Sum of Poissons",
         "normal approximation of the log-transformed MLE")
