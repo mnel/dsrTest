@@ -168,14 +168,8 @@ dsrTest <- function (x, n, w, null.value = NULL,
         c(list(x = X, r = nv, alternative = alternative,
           conf.level = conf.level), control)
         )
-    CINT <- y + sqrt(v / X ) * (htest[["conf.int"]] - X)
-    # deal with alternatives alternatively to ciBound
-    # as scaling and shifting have destroyed the work of
-    # poisson.exact
-    CINT <- switch(alternative,
-      less = c(0, CINT[2]),
-      greater = c(CINT[1], Inf),
-      CINT)
+    CINT <- ciBound(alternative,
+                    y + sqrt(v / X ) * (htest[["conf.int"]] - X))
     p.value <- if (is.null(null.value)) NA else htest[["p.value"]]
     dname <- htest[["data.name"]]
     method <- methodName(
