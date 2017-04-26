@@ -17,7 +17,12 @@ methods_list  <- list(
   dobson = list(
     list(midp = FALSE),
     list(midp = TRUE)),
-  beta = list(list()),
+  beta = list(
+    list(wmtype = "none"),
+    list(wmtype = "tcz"),
+    list(wmtype = "mean"),
+    list(wmtype = "minmaxavg"),
+    list(wmtype = "max")),
   bootstrap = list(list())
 )
 

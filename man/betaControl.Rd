@@ -4,15 +4,33 @@
 \alias{betaControl}
 \title{Control Function for Beta Method for Confidence Intervals}
 \usage{
-betaControl(...)
+betaControl(wmtype = c("none", "tcz", "max", "mean", "minmaxavg"), ...)
 }
 \arguments{
-\item{...}{Currently ignored}
+\item{wmtype}{\code{character} type of modification to the Beta Confidence
+Interval}
+
+\item{...}{Currently ignored.}
 }
 \value{
-an empty list
+a list with values
+\item{wmtype}{modificator to Beta Confidence Interval to implement}
 }
 \description{
-In the future, this may provide arguments
-that will permit modifications to the Beta method.
+Modification to the Beta method. The options are \code{"none"}
+or the same modifications as applied to the Gamma Method
+(see \code{\link{gammaControl}}) are implemented. \code{wmtype="none"} and
+\code{wmtype="tcz"} have been investigated by Tiwari et al (2006) and
+Ng et al (2008).
+}
+\references{
+Tiwari RC, Clegg LX, & Zou Z (2006). 'Efficient interval estimation
+for age-adjusted cancer rates.'
+\emph{Statistical Methods in Medical Research} \strong{15}: 547--569.
+\doi{doi:10.1177/0962280206070621}
+
+Ng HKT, Filardo, G & Zheng G (2008). 'Confidence interval estimating
+procedures for standardized incidence rates.'
+\emph{Computational Statistics and Data Analysis} \strong{52} 3501--3516.
+\doi{doi:10.1016/j.csda.2007.11.004}
 }

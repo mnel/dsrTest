@@ -5,7 +5,7 @@
 \title{Control Function for Gamma Method Confidence Intervals}
 \usage{
 gammaControl(midp = FALSE, nmc = 0, wmtype = c("max", "mean", "minmaxavg",
-  "tcz"), unirootTolFactor = 1e-06)
+  "tcz"), unirootTolFactor = 1e-06, ...)
 }
 \arguments{
 \item{midp}{logical. Use mid-p confidence distribution method? Currently
@@ -17,6 +17,8 @@ only implemented where \code{wmtype = "max"}}
 
 \item{unirootTolFactor}{tolerance factor for uniroot where \code{midp = TRUE}
 and \code{nmc = 0}.}
+
+\item{...}{Currently ignored.}
 }
 \value{
 A list of arguments to pass to \code{\link[asht]{wspoissonTest}}.

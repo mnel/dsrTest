@@ -222,8 +222,37 @@ dsrTest <- function (x, n, w, null.value = NULL,
   }
   # beta
   if (method == "beta"){
-    a <- y * (y * (1 - y) / v - 1)
-    b <- (1 - y) * (y * (1 - y) / v - 1)
+    # different wmtype
+    if (control[["wmtype"]] == "none"){
+      yb <- y
+      vb <- v
+      modifierText <- ""
+    }
+    if (control[["wmtype"]] == "tcz"){
+      yb <- y + mean(W)
+      vb <- v + mean(W ^ 2)
+      modifierText <- "[with Tiwari-Clegg-Zou modification]"
+    }
+    if (control[["wmtype"]] == "mean"){
+      .wm <- mean(W)
+      yb <- y + .wm
+      vb <- v + .wm ^ 2
+      modifierText <- "[with wm=mean(w) modification]"
+    }
+    if (control[["wmtype"]] == "minmaxavg"){
+      .wm <- mean(c(min(W), max(W)))
+      yb <- y + .wm
+      vb <- v +  .wm ^ 2
+      modifierText <- "[with wm=mean(min(w),max(w)) modification]"
+    }
+    if (control[["wmtype"]] == "max"){
+      .wm <- max(W)
+      yb <- y + .wm
+      vb <- v + .wm ^ 2
+      modifierText <- "[with wm=max(w) modification]"
+    }
+    a <- yb * (yb * (1 - yb) / vb - 1)
+    b <- (1 - yb) * (yb * (1 - yb) / vb - 1)
     nv <- scaleNull(null.value, mult)
     CINT <- ciBound(alternative, qbeta(c(alpha, 1 - alpha), a, b))
     p.value <-
@@ -236,7 +265,8 @@ dsrTest <- function (x, n, w, null.value = NULL,
          less = pAL, greater = pAG,
          two.sided = min(1, 2 * pAL, 2 * pAG))
      }
-    method <- methodName("Beta method for Weighted Sum of Poissons")
+    method <- methodName("Beta method for Weighted Sum of Poissons",
+                         modifierText)
   }
   # - Approximate bootstrap
   if (method == "bootstrap"){

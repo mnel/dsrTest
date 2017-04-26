@@ -45,9 +45,10 @@ with(b5, dsrTest(Cases, Births, Standard, mult = 1e5, method = "bootstrap"))
 ## Summaries
 
 ```{r summaries}
-methods_list  <- list(
+# A list of methods to implement
+methods_list <- list(
   gamma = list(
-    list(wmtype = 'max'),
+    list(wmtype = "max"),
     list(midp = TRUE),
     list(wmtype = "tcz"),
     list(wmtype = "mean"),
@@ -56,31 +57,35 @@ methods_list  <- list(
     list(trans = "none"),
     list(trans = "log")),
   dobson = list(
-    list(midp = FALSE), 
+    list(midp = FALSE),
     list(midp = TRUE)),
-  beta = list(list()),
+  beta = list(
+    list(wmtype = "none"),
+    list(wmtype = "tcz"),
+    list(wmtype = "mean"),
+    list(wmtype = "minmaxavg"),
+    list(wmtype = "max")),
   bootstrap = list(list())
 )
-
+# split out to allow call to mapply
+methods <-rep(names(methods_list), times = lengths(methods_list))
+controls <- do.call(c, unname(methods_list))
 all_methods <- mapply(dsrTest::dsrTest,
-  method = rep(names(methods_list), times = lengths(methods_list)),
-  control = do.call(c, unname(methods_list)),
+  method = methods, control = controls,
   MoreArgs = list(mult = 1e5, x = b5$Cases, n = b5$Births, w = b5$Standard),
   SIMPLIFY = FALSE)
-
-names(all_methods) <- c("gamma [wmtype=max]","gamma [midp]", 
-                        "gamma [wmtype=tcz]", "gamma [wmtype=mean]", 
-                        "gamma [wmtype=minmaxavg]",
-                        "asymptotic [trans=none]", "asymptotic [trans=log]",
-                        "dobson [exact ci]","dobson [midp=TRUE]",
-                         "beta", "bootstrap")
-
+# create some "short" names
+control_types <- unlist(controls)
+control_names <- c(gsub("midp=FALSE", "Exact CI",
+  gsub("=TRUE", "", sprintf("[%s=%s]", names(altnames), altnames))), "")
+names(all_methods) <- paste(methods, control_names)
+# combine CI into one data.frame
 results <- do.call(rbind,lapply(all_methods, 
   function(data) data.frame(
     estimate = data$estimate, 
     lci = data$conf.int[1], 
     uci = data$conf.int[2])))
-
+# and display
 knitr::kable(results, digits = 3)
 ```
 
