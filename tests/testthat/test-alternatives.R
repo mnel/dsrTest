@@ -58,6 +58,16 @@ test_that("Estimate is within confidence intervals for all methods", {
            function(x) findInterval(x$estimate, x$conf.int))) == 1L)
 })
 
+less_value <- mapply(dsrTest::dsrTest,
+  method = rep(names(methods_list), times = lengths(methods_list)),
+  control = do.call(c, unname(methods_list)),
+  null.value = sapply(all_ts, function(x) x$conf.int[1]),
+  MoreArgs = list(mult = 1e5, x = xfive, n = nfive, w = ntotal,
+  alternative = "less"), SIMPLIFY = FALSE)
+
+test_that("P value is sensible",{
+  all(sapply(less_value, function(x) x$p.value < 0.05))
+})
 
 test_that("Confidence Intervals are ordered appropriately", {
             all(!sapply(all_less, function(x) is.unsorted(x$confint)))
