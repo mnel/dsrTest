@@ -13,7 +13,9 @@ methods_list  <- list(
     list(wmtype = "minmaxavg")),
   asymptotic = list(
     list(trans = "none"),
-    list(trans = "log")),
+    list(trans = "log"),
+    list(trans = "loglog"),
+    list(trans = "logit")),
   dobson = list(
     list(midp = FALSE),
     list(midp = TRUE)),

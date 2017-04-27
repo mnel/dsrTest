@@ -29,7 +29,7 @@ dobsonControl <- function(midp = FALSE,
 #' A list with values
 #' \item{\code{trans}}{}
 #' @export
-asymptoticControl <- function(trans = c("none", "log"), ...){
+asymptoticControl <- function(trans = c("none", "log", "loglog", "logit"), ...){
   trans <- match.arg(trans)
   list(trans = trans)
 }

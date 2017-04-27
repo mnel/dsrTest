@@ -55,7 +55,9 @@ methods_list <- list(
     list(wmtype = "minmaxavg")),
   asymptotic = list(
     list(trans = "none"),
-    list(trans = "log")),
+    list(trans = "log"),
+    list(trans = "loglog"),
+    list(trans = "logit")),
   dobson = list(
     list(midp = FALSE),
     list(midp = TRUE)),
@@ -77,12 +79,13 @@ all_methods <- mapply(dsrTest::dsrTest,
 # create some "short" names
 control_types <- unlist(controls)
 control_names <- c(gsub("midp=FALSE", "Exact CI",
-  gsub("=TRUE", "", sprintf("[%s=%s]", names(altnames), altnames))), "")
+  gsub("=TRUE", "",
+       sprintf("[%s=%s]", names(control_types), control_types))), "")
 names(all_methods) <- paste(methods, control_names)
 # combine CI into one data.frame
-results <- do.call(rbind,lapply(all_methods, 
+results <- do.call(rbind,lapply(all_methods,
   function(data) data.frame(
-    estimate = data$estimate, 
+    estimate = data$estimate,
     lci = data$conf.int[1], 
     uci = data$conf.int[2])))
 # and display

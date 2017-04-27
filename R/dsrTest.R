@@ -86,9 +86,10 @@
 #' \item{\code{method}}{description of the method}
 #' \item{\code{data.name}}{description of the data}
 #' 
-#' @importFrom stats qnorm qlnorm qbeta pbeta pnorm uniroot
+#' @importFrom stats qnorm qlnorm qbeta pbeta pnorm uniroot qlogis plogis
 #' @importFrom exactci poisson.exact
 #' @importFrom asht wspoissonTest
+#' @importFrom loglognorm qloglognorm
 #' @export
 dsrTest <- function (x, n, w, null.value = NULL,
   alternative = c("two.sided", "less", "greater"),
@@ -107,9 +108,9 @@ dsrTest <- function (x, n, w, null.value = NULL,
     if (!is.null(null.value)){
       zstat <- (null.value - mean) / sd
       p.value <- switch(alternative,
-                        less = pnorm(zstat),
-                        greater = pnorm(zstat, lower.tail = FALSE),
-                        two.sided = 2 * (pnorm(-abs(zstat))))
+        less = stats::pnorm(zstat),
+        greater = stats::pnorm(zstat, lower.tail = FALSE),
+        two.sided = 2 * (stats::pnorm(-abs(zstat))))
     }
   p.value
   }
@@ -166,8 +167,7 @@ dsrTest <- function (x, n, w, null.value = NULL,
       X + (y - null.value / mult) * sqrt(X / v)
     htest <- do.call(exactci::poisson.exact,
         c(list(x = X, r = nv, alternative = alternative,
-          conf.level = conf.level), control)
-        )
+          conf.level = conf.level), control))
     CINT <- ciBound(alternative,
                     y + sqrt(v / X ) * (htest[["conf.int"]] - X))
     p.value <- if (is.null(null.value)) NA else htest[["p.value"]]
@@ -181,7 +181,7 @@ dsrTest <- function (x, n, w, null.value = NULL,
      control <- do.call(asymptoticControl, control)
      if (control[["trans"]] == "none"){
        CINT <- ciBound(alternative,
-                       qnorm(c(alpha, 1 - alpha), y, sqrt(v)))
+                stats::qnorm(c(alpha, 1 - alpha), y, sqrt(v)))
        p.value <- pz(alternative,
                      scaleNull(null.value, mult), y, sqrt(v))
        method <- methodName("Asymptotic method for Weighted Sum of Poissons",
@@ -191,11 +191,37 @@ dsrTest <- function (x, n, w, null.value = NULL,
        # variance of ln[y]
        vstar <- v / (y ^ 2)
        CINT <- ciBound(alternative,
-        qlnorm(c(alpha, 1 - alpha), log(y), sqrt(vstar)))
+        stats::qlnorm(c(alpha, 1 - alpha), log(y), sqrt(vstar)))
        zlstat <- scaleNull(null.value, mult, fun = log)
        p.value <- pz(alternative, zlstat, log(y), sqrt(vstar))
        method <- methodName("Asymptotic method for Weighted Sum of Poissons",
         "normal approximation of the log-transformed MLE")
+     }
+     if (control[["trans"]] == "loglog"){
+       # variance of ln[ ln[-y]]
+       vstar <- v / ((y * log(y)) ^ 2)
+       llog <- function(x) log(-log(x))
+       CINT <- ciBound(alternative,
+         loglognorm::qloglognorm(
+           c(alpha, 1 - alpha), llog(y), sqrt(vstar)))
+       zlstat <- scaleNull(null.value, mult, fun = llog)
+       p.value <- pz(alternative, zlstat, llog(y), sqrt(vstar))
+       method <- methodName(
+         "Asymptotic method for Weighted Sum of Poissons",
+         "normal approximation of the log-log-transformed MLE")
+     }
+     if (control[["trans"]] == "logit"){
+       # variance of logit[y]]
+       vstar <- v / ((y * (1 - y)) ^ 2)
+       ql <- stats::qlogis
+       CINT <- ciBound(alternative,
+                 stats::plogis(stats::qnorm(
+                 c(alpha, 1 - alpha), ql(y), sqrt(vstar))))
+       zlstat <- scaleNull(null.value, mult, fun = ql)
+       p.value <- pz(alternative, zlstat, ql(y), sqrt(vstar))
+       method <- methodName(
+         "Asymptotic method for Weighted Sum of Poissons",
+         "normal approximation of the logit-transformed MLE")
      }
   }
   # gamma
@@ -243,13 +269,14 @@ dsrTest <- function (x, n, w, null.value = NULL,
     a <- yb * (yb * (1 - yb) / vb - 1)
     b <- (1 - yb) * (yb * (1 - yb) / vb - 1)
     nv <- scaleNull(null.value, mult)
-    CINT <- ciBound(alternative, qbeta(c(alpha, 1 - alpha), a, b))
+    CINT <- ciBound(alternative, 
+                    stats::qbeta(c(alpha, 1 - alpha), a, b))
     p.value <-
       if (is.null(null.value))
         NA
      else {
-       pAL <- pbeta(nv, a, b)
-       pAG <- pbeta(nv, a, b, lower.tail = FALSE)
+       pAL <- stats::pbeta(nv, a, b)
+       pAG <- stats::pbeta(nv, a, b, lower.tail = FALSE)
        switch(alternative,
          less = pAL, greater = pAG,
          two.sided = min(1, 2 * pAL, 2 * pAG))
@@ -261,7 +288,7 @@ dsrTest <- function (x, n, w, null.value = NULL,
   if (method == "bootstrap"){
     z0 <- a <- sum(x * (W ^ 3)) / (6 * v ^ (3 / 2))
     pFunction <- function(p){
-      num <- z0 + qnorm(p)
+      num <- z0 + stats::qnorm(p)
       y  + sqrt(v) * num / ( (1 - a * num) ^ 2)
     }
     CINT <- ciBound(alternative, pFunction(c(alpha, 1 - alpha)))
@@ -271,8 +298,8 @@ dsrTest <- function (x, n, w, null.value = NULL,
       nv <- scaleNull(null.value, mult)
       f.AL <- function(p) pFunction(p) - nv
       f.AG <- function(p)  (pFunction(1 - p) - nv)
-      pAL <- uniroot(f.AL, interval = c(1e-07, 1 - 1e-07))$root
-      pAG <- uniroot(f.AG, interval = c(1e-07, 1 - 1e-07))$root
+      pAL <- stats::uniroot(f.AL, interval = c(1e-07, 1 - 1e-07))$root
+      pAG <- stats::uniroot(f.AG, interval = c(1e-07, 1 - 1e-07))$root
       p.value <- switch(alternative, less = pAL, greater = pAG,
         two.sided = min(1, 2 * pAG, 2 * pAL))
     }

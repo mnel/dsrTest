@@ -4,7 +4,7 @@
 \alias{asymptoticControl}
 \title{Control Function for Asymptotic Method Confidence Intervals}
 \usage{
-asymptoticControl(trans = c("none", "log"), ...)
+asymptoticControl(trans = c("none", "log", "loglog", "logit"), ...)
 }
 \arguments{
 \item{trans}{Transformation apply to the MLE distribution.}
