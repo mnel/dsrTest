@@ -66,7 +66,7 @@ less_value <- mapply(dsrTest::dsrTest,
   alternative = "less"), SIMPLIFY = FALSE)
 
 test_that("P value is sensible",{
-  all(sapply(less_value, function(x) x$p.value < 0.05))
+  expect_true(all(sapply(less_value, function(x) x$p.value < 0.05)))
 })
 
 test_that("Confidence Intervals are ordered appropriately", {

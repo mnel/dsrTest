@@ -204,8 +204,16 @@ dsrTest <- function (x, n, w, null.value = NULL,
        CINT <- ciBound(alternative,
          loglognorm::qloglognorm(
            c(alpha, 1 - alpha), llog(y), sqrt(vstar)))
-       zlstat <- scaleNull(null.value, mult, fun = llog)
-       p.value <- pz(alternative, zlstat, llog(y), sqrt(vstar))
+       nv <- scaleNull(null.value, mult)
+       p.value <-
+         if (is.null(null.value))
+           NA
+       else {
+         pAL <- loglognorm::ploglognorm(nv, llog(y), sqrt(vstar))
+         switch(alternative,
+                less = pAL, greater = 1 - pAL,
+                two.sided = min(1, 2 * pAL, 2 * pAG))
+       }
        method <- methodName(
          "Asymptotic method for Weighted Sum of Poissons",
          "normal approximation of the log-log-transformed MLE")
