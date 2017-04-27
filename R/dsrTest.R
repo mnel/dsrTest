@@ -89,7 +89,7 @@
 #' @importFrom stats qnorm qlnorm qbeta pbeta pnorm uniroot qlogis plogis
 #' @importFrom exactci poisson.exact
 #' @importFrom asht wspoissonTest
-#' @importFrom loglognorm qloglognorm
+#' @importFrom loglognorm qloglognorm ploglognorm
 #' @export
 dsrTest <- function (x, n, w, null.value = NULL,
   alternative = c("two.sided", "less", "greater"),
