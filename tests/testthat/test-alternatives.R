@@ -49,31 +49,31 @@ all_greater <- mapply(dsrTest::dsrTest,
 test_that("Estimate is within confidence intervals for all methods", {
   expect_true(all(
     sapply(all_less,
-           function(x) findInterval(x$estimate, x$conf.int))) == 1L)
+      function(x) findInterval(x$estimate, x$conf.int))) == 1L)
   expect_true(all(
     sapply(all_ts,
-           function(x) findInterval(x$estimate, x$conf.int))) == 1L)
+      function(x) findInterval(x$estimate, x$conf.int))) == 1L)
   expect_true(all(
     sapply(all_greater,
-           function(x) findInterval(x$estimate, x$conf.int))) == 1L)
+      function(x) findInterval(x$estimate, x$conf.int))) == 1L)
 })
 
 less_value <- mapply(dsrTest::dsrTest,
   method = rep(names(methods_list), times = lengths(methods_list)),
   control = do.call(c, unname(methods_list)),
-  null.value = sapply(all_ts, function(x) x$conf.int[1]),
+  null.value = sapply(all_less, function(x) x$conf.int[2] - 0.5),
   MoreArgs = list(mult = 1e5, x = xfive, n = nfive, w = ntotal,
   alternative = "less"), SIMPLIFY = FALSE)
 
-test_that("P value is sensible",{
-  expect_true(all(sapply(less_value, function(x) x$p.value < 0.05)))
+test_that("P value is sensible", {
+  expect_true(all(sapply(less_value, function(x) x$p.value > 0.05)))
 })
 
 test_that("Confidence Intervals are ordered appropriately", {
-            all(!sapply(all_less, function(x) is.unsorted(x$confint)))
-            all(!sapply(all_greater, function(x) is.unsorted(x$confint)))
-            all(!sapply(all_ts, function(x) is.unsorted(x$confint)))
-          })
+  all(!sapply(all_less, function(x) is.unsorted(x$confint)))
+  all(!sapply(all_greater, function(x) is.unsorted(x$confint)))
+  all(!sapply(all_ts, function(x) is.unsorted(x$confint)))
+  })
 
 context("Integer overflow")
 
@@ -82,5 +82,6 @@ nL <- c(327L, 30666L, 123419L, 149919L, 104088L, 34392L)
 ntL <- c(319933L, 931318L, 786511L, 488235L, 237863L, 61313L)
 
 test_that("Integer valued data doesn't cause issues", {
-  expect_equal(all_ts[[1]][-9L], dsrTest(xL, nL, ntL, mult = 1e5)[-9L])
+  expect_equal(
+    all_ts[[1]][-9L], dsrTest(xL, nL, ntL, mult = 1e5)[-9L])
 })

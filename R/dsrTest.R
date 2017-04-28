@@ -108,8 +108,8 @@ dsrTest <- function (x, n, w, null.value = NULL,
     if (!is.null(null.value)){
       zstat <- (null.value - mean) / sd
       p.value <- switch(alternative,
-        less = stats::pnorm(zstat),
-        greater = stats::pnorm(zstat, lower.tail = FALSE),
+        less = stats::pnorm(zstat, lower.tail = FALSE),
+        greater = stats::pnorm(zstat, lower.tail = TRUE),
         two.sided = 2 * (stats::pnorm(-abs(zstat))))
     }
   p.value
@@ -164,7 +164,7 @@ dsrTest <- function (x, n, w, null.value = NULL,
       if (is.null(null.value))
         1
     else
-      X + (y - null.value / mult) * sqrt(X / v)
+      X + ((null.value / mult) - y) * sqrt(X / v)
     htest <- do.call(exactci::poisson.exact,
         c(list(x = X, r = nv, alternative = alternative,
           conf.level = conf.level), control))
@@ -211,7 +211,7 @@ dsrTest <- function (x, n, w, null.value = NULL,
        else {
          pAL <- loglognorm::ploglognorm(nv, llog(y), sqrt(vstar))
          switch(alternative,
-                less = pAL, greater = 1 - pAL,
+                less = 1-pAL, greater = pAL,
                 two.sided = min(1, 2 * pAL, 2 * pAG))
        }
        method <- methodName(
@@ -240,7 +240,8 @@ dsrTest <- function (x, n, w, null.value = NULL,
       list(x = x, w = W, nullValue = nv, alternative = alternative,
            conf.level = conf.level), control))
     CINT <- htest[["conf.int"]]
-    p.value <- htest[["p.value"]]
+    pv <- htest[["p.value"]]
+    p.value <- if (control[["midp"]]) 1 - pv else pv 
     method <- methodName(htest[["method"]])
   }
   # beta
@@ -283,8 +284,8 @@ dsrTest <- function (x, n, w, null.value = NULL,
       if (is.null(null.value))
         NA
      else {
-       pAL <- stats::pbeta(nv, a, b)
-       pAG <- stats::pbeta(nv, a, b, lower.tail = FALSE)
+       pAL <- stats::pbeta(nv, a, b, lower.tail = FALSE)
+       pAG <- stats::pbeta(nv, a, b, lower.tail = TRUE)
        switch(alternative,
          less = pAL, greater = pAG,
          two.sided = min(1, 2 * pAL, 2 * pAG))
@@ -304,8 +305,8 @@ dsrTest <- function (x, n, w, null.value = NULL,
       p.value <- NA
     } else {
       nv <- scaleNull(null.value, mult)
-      f.AL <- function(p) pFunction(p) - nv
-      f.AG <- function(p)  (pFunction(1 - p) - nv)
+      f.AL <- function(p) pFunction(1-p) - nv
+      f.AG <- function(p)  (pFunction(p) - nv)
       pAL <- stats::uniroot(f.AL, interval = c(1e-07, 1 - 1e-07))$root
       pAG <- stats::uniroot(f.AG, interval = c(1e-07, 1 - 1e-07))$root
       p.value <- switch(alternative, less = pAL, greater = pAG,

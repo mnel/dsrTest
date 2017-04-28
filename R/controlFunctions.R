@@ -63,7 +63,7 @@ gammaControl <- function(midp = FALSE, nmc = 0,
     RVAL <- list(midp = midp, nmc = nmc,
                  unirootTolFactor = unirootTolFactor)
   } else {
-      RVAL <- list(wmtype = wmtype)
+      RVAL <- list(wmtype = wmtype, midp = FALSE)
     }
   RVAL
 }
