@@ -4,8 +4,8 @@
 #' \code{\link[exactci]{poisson.exact}}.
 #' @seealso \code{\link[exactci]{poisson.exact}}
 #' @return a list with values 
-#' \item{\code{midp}}{}
-#' \item{\code{tsmethod}}{}
+#' \item{midp}{}
+#' \item{tsmethod}{}
 #' @param midp logical, use mid-p values? Currently only permitted
 #' where `tsmethod = "central"`.
 #' @param tsmethod `character` giving two-sided method
@@ -27,7 +27,7 @@ dobsonControl <- function(midp = FALSE,
 #' @param ... Currently ignored.
 #' @return
 #' A list with values
-#' \item{\code{trans}}{}
+#' \item{trans}{}
 #' @export
 asymptoticControl <- function(trans = c("none", "log", "loglog", "logit"), ...){
   trans <- match.arg(trans)
@@ -47,12 +47,13 @@ asymptoticControl <- function(trans = c("none", "log", "loglog", "logit"), ...){
 #' @param ... Currently ignored.
 #' @return
 #' A list of arguments to pass to \code{\link[asht]{wspoissonTest}}.
-#' If `midp = TRUE`, with values
-#' \item{\code{midp}}{}
-#' \item{\code{nmc}}{}
-#' \item{\code{unirootTolFactor}}{}
 #' 
-#' If `midp = FALSE`, with values
+#' If `midp = TRUE`, with values
+#' \item{midp}{}
+#' \item{nmc}{}
+#' \item{unirootTolFactor}{}
+#' 
+#' If `midp = FALSE`, with values:
 #' \item{\code{wmtype}}{}
 #' @export
 gammaControl <- function(midp = FALSE, nmc = 0,

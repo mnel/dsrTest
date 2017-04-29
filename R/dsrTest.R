@@ -74,22 +74,23 @@
 #' each method. See details and relevant `"xxxxControl"` documentation
 #' @return a list with class `"htest"` containing the following 
 #' components: 
-#' \item{\code{statistic}}{number of strata or summands: 
+#' \item{statistic}{number of strata or summands: 
 #' \code{k = length(x)}}
-#' \item{\code{parameter}}{mult}
-#' \item{\code{p.value}}{p-value, set to \code{NA} if \code{null.value = NULL}}
-#' \item{\code{conf.int}}{confidence interval on the true directly
+#' \item{parameter}{mult}
+#' \item{p.value}{p-value, set to \code{NA} if \code{null.value = NULL}}
+#' \item{conf.int}{confidence interval on the true directly
 #' standardized rate}
-#' \item{\code{estimate}}{directly standardized rate}
-#' \item{\code{null.value}}{null hypothesis value for the DSR}
-#' \item{\code{alternative}}{alternative hypothesis type}
-#' \item{\code{method}}{description of the method}
-#' \item{\code{data.name}}{description of the data}
+#' \item{estimate}{directly standardized rate}
+#' \item{null.value}{null hypothesis value for the DSR}
+#' \item{alternative}{alternative hypothesis type}
+#' \item{method}{description of the method}
+#' \item{data.name}{description of the data}
 #' 
 #' @importFrom stats qnorm qlnorm qbeta pbeta pnorm uniroot qlogis plogis
 #' @importFrom exactci poisson.exact
 #' @importFrom asht wspoissonTest
 #' @importFrom loglognorm qloglognorm ploglognorm
+#' @importFrom utils packageVersion
 #' @export
 dsrTest <- function (x, n, w, null.value = NULL,
   alternative = c("two.sided", "less", "greater"),
@@ -164,7 +165,7 @@ dsrTest <- function (x, n, w, null.value = NULL,
       if (is.null(null.value))
         1
     else
-      X + ((null.value / mult) - y) * sqrt(X / v)
+      X + ( (null.value / mult) - y) * sqrt(X / v)
     htest <- do.call(exactci::poisson.exact,
         c(list(x = X, r = nv, alternative = alternative,
           conf.level = conf.level), control))
@@ -199,7 +200,7 @@ dsrTest <- function (x, n, w, null.value = NULL,
      }
      if (control[["trans"]] == "loglog"){
        # variance of ln[ ln[-y]]
-       vstar <- v / ((y * log(y)) ^ 2)
+       vstar <- v / ( (y * log(y)) ^ 2)
        llog <- function(x) log(-log(x))
        CINT <- ciBound(alternative,
          loglognorm::qloglognorm(
@@ -211,7 +212,7 @@ dsrTest <- function (x, n, w, null.value = NULL,
        else {
          pAL <- loglognorm::ploglognorm(nv, llog(y), sqrt(vstar))
          switch(alternative,
-                less = 1-pAL, greater = pAL,
+                less = 1 - pAL, greater = pAL,
                 two.sided = min(1, 2 * pAL, 2 * pAG))
        }
        method <- methodName(
@@ -220,7 +221,7 @@ dsrTest <- function (x, n, w, null.value = NULL,
      }
      if (control[["trans"]] == "logit"){
        # variance of logit[y]]
-       vstar <- v / ((y * (1 - y)) ^ 2)
+       vstar <- v / ( (y * (1 - y)) ^ 2)
        ql <- stats::qlogis
        CINT <- ciBound(alternative,
                  stats::plogis(stats::qnorm(
@@ -241,7 +242,15 @@ dsrTest <- function (x, n, w, null.value = NULL,
            conf.level = conf.level), control))
     CINT <- htest[["conf.int"]]
     pv <- htest[["p.value"]]
-    p.value <- if (control[["midp"]]) 1 - pv else pv 
+    # approximately deal with asht issue that should be fixed soon
+    # (only for midp = TRUE)
+    p.value <-
+      if (control[["midp"]] &&
+          alternative  != "two.sided" &&
+          utils::packageVersion("asht") <= "0.9")
+        1 - pv
+    else
+      pv
     method <- methodName(htest[["method"]])
   }
   # beta
@@ -278,7 +287,7 @@ dsrTest <- function (x, n, w, null.value = NULL,
     a <- yb * (yb * (1 - yb) / vb - 1)
     b <- (1 - yb) * (yb * (1 - yb) / vb - 1)
     nv <- scaleNull(null.value, mult)
-    CINT <- ciBound(alternative, 
+    CINT <- ciBound(alternative,
                     stats::qbeta(c(alpha, 1 - alpha), a, b))
     p.value <-
       if (is.null(null.value))
@@ -305,10 +314,10 @@ dsrTest <- function (x, n, w, null.value = NULL,
       p.value <- NA
     } else {
       nv <- scaleNull(null.value, mult)
-      f.AL <- function(p) pFunction(1-p) - nv
+      f.AL <- function(p) pFunction(1 - p) - nv
       f.AG <- function(p)  (pFunction(p) - nv)
-      pAL <- stats::uniroot(f.AL, interval = c(1e-07, 1 - 1e-07))$root
-      pAG <- stats::uniroot(f.AG, interval = c(1e-07, 1 - 1e-07))$root
+      pAL <- stats::uniroot(f.AL, interval = c(1e-09, 1 - 1e-09))$root
+      pAG <- stats::uniroot(f.AG, interval = c(1e-09, 1 - 1e-09))$root
       p.value <- switch(alternative, less = pAL, greater = pAG,
         two.sided = min(1, 2 * pAG, 2 * pAL))
     }

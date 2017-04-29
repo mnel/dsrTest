@@ -35,17 +35,17 @@ each method. See details and relevant \code{"xxxxControl"} documentation}
 \value{
 a list with class \code{"htest"} containing the following
 components:
-\item{\code{statistic}}{number of strata or summands:
+\item{statistic}{number of strata or summands:
 \code{k = length(x)}}
-\item{\code{parameter}}{mult}
-\item{\code{p.value}}{p-value, set to \code{NA} if \code{null.value = NULL}}
-\item{\code{conf.int}}{confidence interval on the true directly
+\item{parameter}{mult}
+\item{p.value}{p-value, set to \code{NA} if \code{null.value = NULL}}
+\item{conf.int}{confidence interval on the true directly
 standardized rate}
-\item{\code{estimate}}{directly standardized rate}
-\item{\code{null.value}}{null hypothesis value for the DSR}
-\item{\code{alternative}}{alternative hypothesis type}
-\item{\code{method}}{description of the method}
-\item{\code{data.name}}{description of the data}
+\item{estimate}{directly standardized rate}
+\item{null.value}{null hypothesis value for the DSR}
+\item{alternative}{alternative hypothesis type}
+\item{method}{description of the method}
+\item{data.name}{description of the data}
 }
 \description{
 A number of methods have been proposed for calculating

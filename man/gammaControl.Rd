@@ -22,12 +22,13 @@ and \code{nmc = 0}.}
 }
 \value{
 A list of arguments to pass to \code{\link[asht]{wspoissonTest}}.
-If \code{midp = TRUE}, with values
-\item{\code{midp}}{}
-\item{\code{nmc}}{}
-\item{\code{unirootTolFactor}}{}
 
-If \code{midp = FALSE}, with values
+If \code{midp = TRUE}, with values
+\item{midp}{}
+\item{nmc}{}
+\item{unirootTolFactor}{}
+
+If \code{midp = FALSE}, with values:
 \item{\code{wmtype}}{}
 }
 \description{

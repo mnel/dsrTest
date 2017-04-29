@@ -17,8 +17,8 @@ where \code{tsmethod = "central"}.}
 }
 \value{
 a list with values
-\item{\code{midp}}{}
-\item{\code{tsmethod}}{}
+\item{midp}{}
+\item{tsmethod}{}
 }
 \description{
 Provides a list of arguments to pass to

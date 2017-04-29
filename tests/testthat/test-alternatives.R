@@ -58,22 +58,28 @@ test_that("Estimate is within confidence intervals for all methods", {
       function(x) findInterval(x$estimate, x$conf.int))) == 1L)
 })
 
-less_value <- mapply(dsrTest::dsrTest,
-  method = rep(names(methods_list), times = lengths(methods_list)),
-  control = do.call(c, unname(methods_list)),
-  null.value = sapply(all_less, function(x) x$conf.int[2] - 0.5),
-  MoreArgs = list(mult = 1e5, x = xfive, n = nfive, w = ntotal,
-  alternative = "less"), SIMPLIFY = FALSE)
-
-test_that("P value is sensible", {
-  expect_true(all(sapply(less_value, function(x) x$p.value > 0.05)))
-})
-
 test_that("Confidence Intervals are ordered appropriately", {
   all(!sapply(all_less, function(x) is.unsorted(x$confint)))
   all(!sapply(all_greater, function(x) is.unsorted(x$confint)))
   all(!sapply(all_ts, function(x) is.unsorted(x$confint)))
-  })
+})
+
+context("P-values sensible for alternatives")
+
+less_value <- mapply(dsrTest::dsrTest,
+  method = rep(names(methods_list), times = lengths(methods_list)),
+  control = do.call(c, unname(methods_list)),
+  null.value = sapply(all_less, function(x) x$conf.int[2] + 0.5),
+  MoreArgs = list(mult = 1e5, x = xfive, n = nfive, w = ntotal,
+  alternative = "less"), SIMPLIFY = FALSE)
+
+test_that("P value is sensible :: less", {
+  pvals <- sapply(less_value, function(x) x$p.value < 0.05)
+  message(methods_list[which(!pvals)])
+  expect_true(all(pvals))
+})
+
+
 
 context("Integer overflow")
 

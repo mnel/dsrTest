@@ -13,7 +13,7 @@ asymptoticControl(trans = c("none", "log", "loglog", "logit"), ...)
 }
 \value{
 A list with values
-\item{\code{trans}}{}
+\item{trans}{}
 }
 \description{
 Specify the transformation to apply to the distribution
