@@ -72,7 +72,7 @@ methods_list <- list(
 # split out to allow call to mapply
 methods <-rep(names(methods_list), times = lengths(methods_list))
 controls <- do.call(c, unname(methods_list))
-all_methods <- mapply(dsrTest::dsrTest,
+all_methods <- mapply(dsrTest,
   method = methods, control = controls,
   MoreArgs = list(mult = 1e5, x = b5$Cases, n = b5$Births, w = b5$Standard),
   SIMPLIFY = FALSE)
