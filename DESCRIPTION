@@ -2,7 +2,7 @@ Package: dsrTest
 Type: Package
 Title: Tests and Confidence Intervals on Directly Standardized 
     Rates for Several Methods
-Version: 0.3
+Version: 0.2.1
 Date: 2017-04-24
 Author: Michael Nelson
 Maintainer: Michael Nelson <michael.nelson.r.pkg@gmail.com>
