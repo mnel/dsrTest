@@ -5,10 +5,13 @@
 
 ## R CMD check results
 
-0 errors | 0 warnings | 1 note
+0 errors | 0 warnings | 0 note
 
-* This is a new submission.
+ - A bugfix submission (in addition to improving documentation and 
+ adding some additional functionality)
+ - Added version specific dependence on the latest release of 
+ asht package (0.9.1) 
 
 ## Reverse dependencies
 
-This is a new submission, so there are no reverse dependencies.
+There are no reverse dependencies.

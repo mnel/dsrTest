@@ -12,7 +12,7 @@
 #' implemented in \code{\link[asht]{wspoissonTest}}. 
 #' 
 #' @details
-#' Four classes of method have been implemented here:
+#' Five classes of method have been implemented here:
 #' 
 #' \describe{
 #' \item{\code{"gamma"}}{Calls \code{\link[asht]{wspoissonTest}}. By default
@@ -20,7 +20,7 @@
 #' Modifications proposed by Tiwari et al (2006) and Fay and Kim (2017) 
 #' also implemented - see \code{\link{gammaControl}}.} 
 #' \item{\code{"asymptotic"}}{Using the normal approximation of the 
-#' MLE or transformed MLE distribition - see \code{\link{asymptoticControl}}}
+#' MLE or transformed MLE distribution - see \code{\link{asymptoticControl}}}
 #' \item{\code{"dobson"}}{Uses the method proposed by Dobson et al (1991). 
 #' Estimating the confidence interval on the unweighted sum is done by calling
 #' \code{\link[exactci]{poisson.exact}} - both the exact method and
@@ -90,7 +90,6 @@
 #' @importFrom exactci poisson.exact
 #' @importFrom asht wspoissonTest
 #' @importFrom loglognorm qloglognorm ploglognorm
-#' @importFrom utils packageVersion
 #' @export
 dsrTest <- function (x, n, w, null.value = NULL,
   alternative = c("two.sided", "less", "greater"),
@@ -244,13 +243,7 @@ dsrTest <- function (x, n, w, null.value = NULL,
     pv <- htest[["p.value"]]
     # approximately deal with asht issue that should be fixed soon
     # (only for midp = TRUE)
-    p.value <-
-      if (control[["midp"]] &&
-          alternative  != "two.sided" &&
-          utils::packageVersion("asht") <= "0.9")
-        1 - pv
-    else
-      pv
+    p.value <- pv
     method <- methodName(htest[["method"]])
   }
   # beta

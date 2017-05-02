@@ -14,7 +14,7 @@ Interval}
 }
 \value{
 a list with values
-\item{wmtype}{modificator to Beta Confidence Interval to implement}
+\item{wmtype}{modification to Beta Confidence Interval to implement}
 }
 \description{
 Modification to the Beta method. The options are \code{"none"}

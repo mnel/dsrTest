@@ -2,7 +2,7 @@ Package: dsrTest
 Type: Package
 Title: Tests and Confidence Intervals on Directly Standardized 
     Rates for Several Methods
-Version: 0.2
+Version: 0.3
 Date: 2017-04-24
 Author: Michael Nelson
 Maintainer: Michael Nelson <michael.nelson.r.pkg@gmail.com>
@@ -16,9 +16,8 @@ Roxygen: list(markdown = TRUE)
 Depends: R (>= 2.10)
 Imports: stats,
     exactci,
-    asht,
+    asht (>= 0.9.1),
     loglognorm,
-    utils
 Suggests: testthat,
     knitr,
     rmarkdown,

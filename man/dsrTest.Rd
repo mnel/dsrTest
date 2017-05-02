@@ -55,7 +55,7 @@ The default uses the Gamma method by Fay and Feuer (1997) and
 implemented in \code{\link[asht]{wspoissonTest}}.
 }
 \details{
-Four classes of method have been implemented here:
+Five classes of method have been implemented here:
 
 \describe{
 \item{\code{"gamma"}}{Calls \code{\link[asht]{wspoissonTest}}. By default
@@ -63,7 +63,7 @@ uses the Gamma Method proposed by Fay and Feuer (1997).
 Modifications proposed by Tiwari et al (2006) and Fay and Kim (2017)
 also implemented - see \code{\link{gammaControl}}.}
 \item{\code{"asymptotic"}}{Using the normal approximation of the
-MLE or transformed MLE distribition - see \code{\link{asymptoticControl}}}
+MLE or transformed MLE distribution - see \code{\link{asymptoticControl}}}
 \item{\code{"dobson"}}{Uses the method proposed by Dobson et al (1991).
 Estimating the confidence interval on the unweighted sum is done by calling
 \code{\link[exactci]{poisson.exact}} - both the exact method and

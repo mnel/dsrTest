@@ -11,7 +11,7 @@
 #' \describe{
 #' \item{\code{Age}}{The age category of the mothers.}
 #' \item{\code{BirthOrder}}{The birth order.}
-#' \item{\code{Cases}}{The number of cases of Down's Sydrome.}
+#' \item{\code{Cases}}{The number of cases of Down's Syndrome.}
 #' \item{\code{Births}}{The number of live births.}
 #' \item{\code{Standard}}{A "standard" population, derived as the total
 #' number of births in each age category}

@@ -91,7 +91,7 @@ gammaControl <- function(midp = FALSE, nmc = 0,
 #' @param ... Currently ignored.
 #'
 #' @return a list with values
-#' \item{wmtype}{modificator to Beta Confidence Interval to implement}
+#' \item{wmtype}{modification to Beta Confidence Interval to implement}
 #'
 #' @export
 betaControl <- function(wmtype = c("none", "tcz", "max", "mean",
