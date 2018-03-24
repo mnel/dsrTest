@@ -3,7 +3,7 @@ Type: Package
 Title: Tests and Confidence Intervals on Directly Standardized 
     Rates for Several Methods
 Version: 0.2.2
-Date: 2017-05-04
+Date: 2018-03-24
 Author: Michael Nelson
 Maintainer: Michael Nelson <michael.nelson.r.pkg@gmail.com>
 Description: Perform a test of a simple null hypothesis about a 
